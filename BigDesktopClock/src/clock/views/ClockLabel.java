@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
+import com.itextpdf.text.Document;
+
 class ClockLabel extends JLabel implements ActionListener {
 	 
 	  String type;
@@ -20,6 +22,7 @@ class ClockLabel extends JLabel implements ActionListener {
 	  int hour = 0;
 	  int minute = 0;
 	  int second = 0;
+	  
 	 
 	  public ClockLabel(String type) {
 		 date = new Date();

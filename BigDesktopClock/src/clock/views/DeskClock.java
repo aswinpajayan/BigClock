@@ -12,6 +12,8 @@ import javax.swing.SwingConstants;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.awt.Font;
@@ -47,6 +49,7 @@ public class DeskClock {
 				try {
 					DeskClock window = new DeskClock();
 					window.frame.setVisible(true);
+					doc.close();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -190,8 +193,11 @@ public class DeskClock {
 					if(chckbxGeneratePdf.isSelected())
 					{
 						doc = new Document();
+						
 						try {
 							PdfWriter.getInstance(doc, new FileOutputStream("Report.pdf"));
+							doc.add( new Paragraph("Timing Report ",FontFactory.getFont("Times New Roman")));
+							doc.add(new Paragraph(new Date().toString()));
 						} catch (FileNotFoundException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
