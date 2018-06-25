@@ -4,9 +4,16 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import java.awt.Color;
+import java.awt.Dialog;
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -14,15 +21,22 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
+import java.awt.Insets;
+import javax.swing.JCheckBox;
 
 public class DeskClock {
 
 	private JFrame frame;
-	private int index = 0;
+	private static int index = 0;
 	private JTextArea txtResults;
+	String text;
+	private static Document doc = new Document();
 
 	/**
 	 * Launch the application.
@@ -58,37 +72,34 @@ public class DeskClock {
 		GridBagConstraints gridConstTime = new GridBagConstraints();
 		GridBagConstraints gridConstDay = new GridBagConstraints();
 		
-		ClockLabel lblDate = new ClockLabel("date");
-		gridConstDate.weighty = 0.1;
-		gridConstDate.weightx = 0.2;
-		gridConstDate.anchor = GridBagConstraints.FIRST_LINE_START;
-		gridConstDate.gridx = 0;
-		gridConstDate.gridy = 0;
-		frame.getContentPane().add(lblDate,gridConstDate);
+	
 		
 		ClockLabel lblTime = new ClockLabel("time");
-		gridConstTime.weighty = 1;
-		gridConstTime.weighty = 1;
+		lblTime.setBackground(Color.BLACK);
+		lblTime.setFont(new Font("Arial Black", Font.PLAIN, 150));
+		gridConstTime.weighty = 0.4;
+		gridConstTime.weightx = 1;
 		gridConstTime.fill = GridBagConstraints.BOTH;
 		gridConstTime.anchor = GridBagConstraints.CENTER;
 		gridConstTime.gridx = 0;
 		gridConstTime.gridy = 1;
 		frame.getContentPane().add(lblTime,gridConstTime);
 		
-		ClockLabel lblDay = new ClockLabel("day");
-		gridConstDay.weighty = 0.05;
-		gridConstDay.weighty = 0.1;
-		gridConstDay.fill = GridBagConstraints.NONE;
-		gridConstDay.gridx = 0;
-		gridConstDay.gridy = 2;
-		gridConstDay.anchor = GridBagConstraints.LAST_LINE_END;
-		frame.getContentPane().add(lblDay,gridConstDay);
+		
+		ClockLabel lblDate = new ClockLabel("dateDay");
+		gridConstDate.weighty = 0.1;
+		gridConstDate.weightx = 0.2;
+		gridConstDate.anchor = GridBagConstraints.LAST_LINE_START;
+		gridConstDate.gridx = 0;
+		gridConstDate.gridy = 0;
+		frame.getContentPane().add(lblDate,gridConstDate);
 		
 		JPanel pnlSetTime = new JPanel();
 		//pnlSetTime.setSize(300,300);
 		pnlSetTime.setOpaque(true);
 		pnlSetTime.setBackground(Color.BLACK);
-		//pnlSetTime.setForeground(Color.WHITE);
+		//pnlSetTime.setBackground(Color.WHITE);
+		pnlSetTime.setForeground(Color.WHITE);
 		pnlSetTime.setLayout(null);
 		GridBagConstraints gridConstSetTime = new GridBagConstraints();
 		gridConstSetTime.fill = GridBagConstraints.BOTH;
@@ -99,57 +110,106 @@ public class DeskClock {
 		frame.getContentPane().add(pnlSetTime,gridConstSetTime);
 		
 		JSpinner spnHour = new JSpinner();
-		spnHour.setModel(new SpinnerNumberModel(0, 0, 23, 1));
+		
+		spnHour.setModel(new SpinnerNumberModel(new Date().getHours(), 0, 23, 1));
 		spnHour.setForeground(Color.RED);
 		spnHour.setBackground(Color.WHITE);
 		spnHour.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		spnHour.setBounds(431, 11, 78, 34);
+		spnHour.setBounds(335, 11, 78, 34);
 		pnlSetTime.add(spnHour);
 		
 		JSpinner spnMinute = new JSpinner();
-		spnMinute.setModel(new SpinnerNumberModel(0, 0, 59, 1));
+		spnMinute.setModel(new SpinnerNumberModel(new Date().getMinutes(), 0, 59, 1));
 		spnMinute.setForeground(Color.RED);
-		spnMinute.setBounds(596, 11, 78, 34);
+		spnMinute.setBounds(500, 11, 78, 34);
 		pnlSetTime.add(spnMinute);
 		
 		JSpinner spnSecond = new JSpinner();
 		spnSecond.setModel(new SpinnerNumberModel(0, 0, 59, 1));
 		spnSecond.setForeground(Color.RED);
-		spnSecond.setBounds(760, 11, 78, 34);
+		spnSecond.setBounds(664, 11, 78, 34);
 		pnlSetTime.add(spnSecond);
 		
 		JLabel lblMm = new JLabel("MM:");
 		lblMm.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblMm.setForeground(Color.RED);
 		lblMm.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMm.setBounds(549, 11, 46, 34);
+		lblMm.setBounds(453, 11, 46, 34);
 		pnlSetTime.add(lblMm);
 		
 		JLabel lblSs = new JLabel("SS:");
 		lblSs.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSs.setForeground(Color.RED);
 		lblSs.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblSs.setBounds(716, 11, 46, 34);
+		lblSs.setBounds(620, 11, 46, 34);
 		pnlSetTime.add(lblSs);
 		
 		JLabel lblHh = new JLabel("HH:");
 		lblHh.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHh.setForeground(Color.RED);
 		lblHh.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblHh.setBounds(388, 11, 46, 34);
+		lblHh.setBounds(292, 11, 46, 34);
 		pnlSetTime.add(lblHh);
 		
+		
+		txtResults = new JTextArea();
+		txtResults.setEditable(false);
+		txtResults.setRows(5);
+		txtResults.setLineWrap(true);
+		txtResults.setForeground(Color.WHITE);
+		//pnl_1.setSize(1266,200);
+		txtResults.setOpaque(true);
+		txtResults.setBackground(Color.BLACK);
+		//pnl_1.setBackground(Color.RED);
+		//pnl_1.setForeground(Color.RED);
+		txtResults.setLayout(null);
+		GridBagConstraints gbc_lblResult = new GridBagConstraints();
+		gbc_lblResult.insets = new Insets(0, 20, 0, 20);
+		gbc_lblResult.fill = GridBagConstraints.BOTH;
+		gbc_lblResult.weightx = 1;
+		gbc_lblResult.weighty = 1;
+		gbc_lblResult.gridx = 0;
+		gbc_lblResult.gridy = 4;
+		frame.getContentPane().add(txtResults,gbc_lblResult); 
+		
+		JCheckBox chckbxGeneratePdf = new JCheckBox("Generate PDF");
+		chckbxGeneratePdf.setSelected(true);
+		chckbxGeneratePdf.setForeground(Color.WHITE);
+		chckbxGeneratePdf.setBackground(Color.BLACK);
+		chckbxGeneratePdf.setBounds(906, 17, 97, 23);
+		pnlSetTime.add(chckbxGeneratePdf);
 		
 		JButton btnGo = new JButton("GO");
 		btnGo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(index == 0)
-					txtResults.setText(++index + lblTime.adjustTime(new Date(),lblTime.hour,lblTime.minute,lblTime.second).toString());
-				else {
-					String text = txtResults.getText();
-					text += " , " + (++index) + lblTime.adjustTime(new Date(),lblTime.hour,lblTime.minute,lblTime.second).toString();
-					txtResults.setText(text);
+				text = "";
+				SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+				if(index%6 == 0) {
+					text.concat( " l \n\n l");System.out.println("break");}
+				if(index == 0) {
+					if(chckbxGeneratePdf.isSelected())
+					{
+						doc = new Document();
+						try {
+							PdfWriter.getInstance(doc, new FileOutputStream("Report.pdf"));
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (DocumentException e) {
+							System.out.println("failed to create report");
+							e.printStackTrace();
+						}
+					}
+					text = "\n\n";
+					chckbxGeneratePdf.setEnabled(false);
+				}else {
+					text = txtResults.getText();
+					
 				}
+				text += " \t\t " + (++index) + " ---> " + sdf.format(lblTime.adjustTime(new Date(),lblTime.hour,lblTime.minute,lblTime.second));
+				
+				System.out.println(text);
+				txtResults.setText(text);
 					
 			}
 		});
@@ -180,46 +240,21 @@ public class DeskClock {
 		});
 		btnSet.setForeground(Color.RED);
 		btnSet.setFont(new Font("Calibri", Font.BOLD, 11));
-		btnSet.setBounds(887, 11, 55, 34);
+		btnSet.setBounds(781, 11, 65, 34);
 		pnlSetTime.add(btnSet);
+		
+		
 		
 		
 		//pnlSetTime.setLayout(new GridLayout(1,));
 		
 		
-		JPanel pnl_1 = new JPanel();
-		pnl_1.setSize(300,300);
-		pnl_1.setOpaque(true);
-		pnl_1.setBackground(Color.BLACK);
-		//pnl_1.setForeground(Color.RED);
-		pnl_1.setLayout(null);
-		GridBagConstraints gridConstPnl_1 = new GridBagConstraints();
-		gridConstPnl_1.fill = GridBagConstraints.BOTH;
-		gridConstPnl_1.weightx = 1;
-		gridConstPnl_1.weighty = 1;
-		gridConstPnl_1.gridx = 0;
-		gridConstPnl_1.gridy = 4;
-		frame.getContentPane().add(pnl_1,gridConstPnl_1);
 		
-		txtResults = new JTextArea();
-		
-		txtResults.setBounds(616, 28, 556, 131);
-		pnl_1.add(txtResults);
-		txtResults.setColumns(10);
-		
-		JPanel pnl_2 = new JPanel();
-		pnl_2.setSize(300,300);
-		pnl_2.setOpaque(true);
-		pnl_2.setBackground(Color.BLACK);
-		//pnl_2.setForeground(Color.RED);
-		pnl_2.setLayout(null);
-		GridBagConstraints gridConstpnl_2 = new GridBagConstraints();
-		gridConstpnl_2.fill = GridBagConstraints.BOTH;
-		gridConstpnl_2.weightx = 1;
-		gridConstpnl_2.weighty = 1;
-		gridConstpnl_2.gridx = 0;
-		gridConstpnl_2.gridy = 5;
-		frame.getContentPane().add(pnl_2,gridConstpnl_2);
+//		txtResults = new JTextArea();
+//		
+//		txtResults.setBounds(616, 28, 556, 131);
+//		lblResult.add(txtResults);
+//		txtResults.setColumns(10);
 		
 		frame.setBounds(0, 0, 1266, 720);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
