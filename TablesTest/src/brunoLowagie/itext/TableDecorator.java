@@ -21,7 +21,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
  
-public class MyFirstTable {
+public class TableDecorator {
  
     /** The resulting PDF file. */
     public static String REPORT
@@ -40,7 +40,7 @@ public class MyFirstTable {
     public static void main(String[] args)
         throws IOException, DocumentException {
     	SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMdd");
-        new MyFirstTable().createPdf(REPORT + sdf.format(new Date()) + ".pdf");
+        new TableDecorator().createPdf(REPORT + sdf.format(new Date()) + ".pdf");
     }
  
     /**
