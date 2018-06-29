@@ -4,8 +4,6 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import java.awt.Color;
-import java.awt.Dialog;
-
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -13,11 +11,8 @@ import javax.swing.SwingConstants;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfWriter;
-
 import brunoLowagie.itext.TableDecorator;
 
 import java.awt.Font;
@@ -27,8 +22,6 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -78,7 +71,7 @@ public class DeskClock {
 		frame.getContentPane().setLayout(new GridBagLayout());
 		GridBagConstraints gridConstDate = new GridBagConstraints();
 		GridBagConstraints gridConstTime = new GridBagConstraints();
-		GridBagConstraints gridConstDay = new GridBagConstraints();
+
 		
 	
 		
