@@ -14,7 +14,11 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfWriter;
+
+import brunoLowagie.itext.MyFirstTable;
 
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -25,6 +29,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.awt.event.ActionEvent;
@@ -192,17 +197,15 @@ public class DeskClock {
 				if(index == 0) {
 					if(chckbxGeneratePdf.isSelected())
 					{
-						doc = new Document();
+						
 						
 						try {
-							PdfWriter.getInstance(doc, new FileOutputStream("Report.pdf"));
-							doc.add( new Paragraph("Timing Report ",FontFactory.getFont("Times New Roman")));
-							doc.add(new Paragraph(new Date().toString()));
-						} catch (FileNotFoundException e) {
+							SimpleDateFormat sdf2 = new SimpleDateFormat("YYYYMMdd");
+							MyFirstTable.createTableHeaders();
+					        new MyFirstTable().createPdf(MyFirstTable.REPORT + sdf2.format(new Date()) + ".pdf");
+							
+						} catch (Exception e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (DocumentException e) {
-							System.out.println("failed to create report");
 							e.printStackTrace();
 						}
 					}
@@ -212,7 +215,54 @@ public class DeskClock {
 					text = txtResults.getText();
 					
 				}
-				text += " \t\t " + (++index) + " ---> " + sdf.format(lblTime.adjustTime(new Date(),lblTime.hour,lblTime.minute,lblTime.second));
+				text += "  " + (++index) + " -> " + sdf.format(lblTime.adjustTime(new Date(),lblTime.hour,lblTime.minute,lblTime.second));
+				
+				int temp;
+				temp = index%16;
+				temp = (temp==0)?16:temp;
+				if(index<51) {
+					PdfPCell cell_temp = new PdfPCell(new Phrase(String.valueOf(index),FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
+					cell_temp.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+					MyFirstTable.tableLeft.addCell(cell_temp);
+					
+					cell_temp = new PdfPCell(new Phrase(String.valueOf(temp) ,FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
+					cell_temp.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+					MyFirstTable.tableLeft.addCell(cell_temp);
+					MyFirstTable.tableLeft.addCell(new Phrase(sdf.format(lblTime.adjustTime(new Date(),lblTime.hour,lblTime.minute,lblTime.second)),FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
+					MyFirstTable.tableLeft.addCell(new Phrase("        ",FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
+					MyFirstTable.tableLeft.addCell(new Phrase("        ",FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
+					SimpleDateFormat sdf2 = new SimpleDateFormat("YYYYMMdd");
+			        try {
+						new MyFirstTable().createPdf(MyFirstTable.REPORT + sdf2.format(new Date()) + ".pdf");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (DocumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}else {
+					PdfPCell cell_temp = new PdfPCell(new Phrase(String.valueOf(index),FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
+					cell_temp.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+					MyFirstTable.tableRight.addCell(cell_temp);
+					
+					cell_temp = new PdfPCell(new Phrase(String.valueOf(temp) ,FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
+					cell_temp.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+					MyFirstTable.tableRight.addCell(cell_temp);
+					MyFirstTable.tableRight.addCell(new Phrase(sdf.format(lblTime.adjustTime(new Date(),lblTime.hour,lblTime.minute,lblTime.second)),FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
+					MyFirstTable.tableRight.addCell(new Phrase("        ",FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
+					MyFirstTable.tableRight.addCell(new Phrase("        ",FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
+					SimpleDateFormat sdf2 = new SimpleDateFormat("YYYYMMdd");
+			        try {
+						new MyFirstTable().createPdf(MyFirstTable.REPORT + sdf2.format(new Date()) + ".pdf");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (DocumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 				
 				System.out.println(text);
 				txtResults.setText(text);
