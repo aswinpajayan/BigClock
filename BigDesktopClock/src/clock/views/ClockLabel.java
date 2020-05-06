@@ -7,10 +7,11 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
+
+import com.itextpdf.text.Document;
 
 class ClockLabel extends JLabel implements ActionListener {
 	 
@@ -21,6 +22,7 @@ class ClockLabel extends JLabel implements ActionListener {
 	  int hour = 0;
 	  int minute = 0;
 	  int second = 0;
+	  
 	 
 	  public ClockLabel(String type) {
 		 date = new Date();
@@ -42,13 +44,18 @@ class ClockLabel extends JLabel implements ActionListener {
 	                    setFont(new Font("sans-serif", Font.PLAIN, 15));
 	                    setHorizontalAlignment(SwingConstants.RIGHT);
 	                    break;
+	      case "dateDay" : sdf = new SimpleDateFormat("  MMMM dd yyyy , EEEE  ");
+	      					setFont(new Font("Times New Roman", Font.ITALIC, 20));
+	      					setHorizontalAlignment(SwingConstants.LEFT);
+	      					break;
+          
 	      default     : sdf = new SimpleDateFormat();
 	                    break;
 	    }
 	 
 	    Timer t = new Timer(1000, this);
 	    t.start();
-	    System.out.println("UI Thread name " + Thread.currentThread().getName());
+	   
 	  }
 	  @Override
 	  public void actionPerformed(ActionEvent ae) {
