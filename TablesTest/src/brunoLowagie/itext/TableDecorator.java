@@ -91,19 +91,19 @@ public class TableDecorator {
     	tableLeft = new PdfPTable(5);
         // the cell object
         PdfPCell cell;
-        cell = new PdfPCell(new Phrase("Voter",FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
+        cell = new PdfPCell(new Phrase("Voter",FontFactory.getFont(FontFactory.TIMES, 8f)));
         cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
         cell.setVerticalAlignment(PdfPCell.ALIGN_CENTER);
         cell.setRowspan(2);
         tableLeft.addCell(cell);
         // now we add a cell with rowspan 2
-        cell = new PdfPCell(new Phrase("Manual ",FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
+        cell = new PdfPCell(new Phrase("User Click ",FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
         cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
         cell.setVerticalAlignment(PdfPCell.ALIGN_CENTER);
         cell.setColspan(2);
         tableLeft.addCell(cell);
         
-        cell = new PdfPCell(new Phrase("PADU Print",FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
+        cell = new PdfPCell(new Phrase("Manual",FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
         cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
         cell.setVerticalAlignment(PdfPCell.ALIGN_CENTER);
         cell.setColspan(2);
@@ -140,13 +140,13 @@ public class TableDecorator {
         cell.setRowspan(2);
         tableRight.addCell(cell);
         // now we add a cell with rowspan 2
-        cell = new PdfPCell(new Phrase("Manual ",FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
+        cell = new PdfPCell(new Phrase("User Click ",FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
         cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
         cell.setVerticalAlignment(PdfPCell.ALIGN_CENTER);
         cell.setColspan(2);
         tableRight.addCell(cell);
         
-        cell = new PdfPCell(new Phrase("PADU Print",FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
+        cell = new PdfPCell(new Phrase("Manual",FontFactory.getFont(FontFactory.TIMES_ROMAN, 8f)));
         cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
         cell.setVerticalAlignment(PdfPCell.ALIGN_CENTER);
         cell.setColspan(2);
